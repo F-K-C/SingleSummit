@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} User {% endblock %}
+{% block description %} User {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Administração de usuários</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'visitor-home' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">User</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between">
+                                <h4 class="card-title my-auto">Administração de usuários</h4>
+                                <button class="btn btn-primary" id="add-user">+
+                                    Adicionar usuário
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="user-datatable"
+                                       class="table table-bordered table-striped dataTable dtr-inline"
+                                       style="width:100%">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    {#    Modal#}
+
+    <div class="modal fade" id="create-user-modal">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Usuário</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="user-create">
+                        <div class=" mb-3">
+                            <label>Nome</label>
+                            <input type="text" class="form-control" placeholder="Nome" id="first_name">
+
+                        </div>
+                        <div class=" mb-3">
+                            <label>Sobrenome</label>
+                            <input type="text" class="form-control" placeholder="Sobrenome" id="last_name">
+
+                        </div>
+                        <div class=" mb-3">
+                            <label>Email</label>
+                            <input type="email" class="form-control" placeholder="Email" id="email">
+
+                        </div>
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input type="password" class="form-control" placeholder="Password" id="password">
+
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                    <button type="button" class="btn btn-primary d-none" id="edit">Update</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src='{% static "custom_js/user.js" %}'></script>
+    <script>
+        let data;
+        window.onload = function () {
+
+            data = {
+                "users_url" : ' {% url "users" %}',
+                "users_datatable_url": ' {% url "users_datatable" %}',
+                "users_status_url": ' {% url "users_status" %}',
+                "users_delete_url": ' {% url "users_delete" %}',
+            };
+
+            new User(data);
+        }
+    </script>
+{% endblock %}

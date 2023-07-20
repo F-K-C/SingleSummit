@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content="{% block title %} {% endblock %}">
+    <meta name="description" content="{% block description %} {% endblock %}">
+
+
+    <!-- PAGE TITLE HERE -->
+    <title>Single Summit</title>
+
+    <!-- FAVICONS ICON -->
+    {% include "common/css_import.html" %}
+</head>
+
+{% block css %}{% endblock %}
+
+</head>
+
+<body class="hold-transition login-page">
+<div class="login-box">
+
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="javascript:void(0)" class="h1"><b>Single</b>Summit</a>
+        </div>
+        <div class="card-body">
+            <p class="login-box-msg">Sign in para começar a sua sessão</p>
+            <form id="loginForm">
+                <div class="input-group mb-3">
+                    <input type="email" id="email" class="form-control" placeholder="Email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" id="password" class="form-control" placeholder="Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
+                </div>
+            </form>
+            <div class="social-auth-links text-center mt-2 mb-3">
+                <a href="{% url 'google-login' %}" class="btn btn-block btn-danger">
+                    <i class="fab fa-google-plus mr-2"></i> Cadastre-se com Google
+                </a>
+            </div>
+            <p class="mb-0">
+                <a href="{% url 'visitor_register' %}" class="text-center">Não tem uma conta? Cadastre-se!</a>
+            </p>
+        </div>
+
+    </div>
+
+</div>
+    {% include "common/js_import.html" %}
+<script src='{% static "custom_js/sign-up.js" %}'></script>
+
+<script>
+    let data;
+    window.onload = function () {
+        data = {
+            "login_url": ' {% url "users_admin_login" %}',
+            "home_url": ' {% url "visitor-event" %}'
+        };
+
+        new SignUp(data);
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} User {% endblock %}
+{% block description %} User {% endblock %}
+
+{% block css %}
+    <link href="{% static 'custom_css/event.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Lista de eventos</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{% url 'visitor-home' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Eventos</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <button class="btn btn-primary mx-1 events-btn" id="all-events" value="0">Próximos eventos</button>
+                                {% if user.role.code != 'super-admin' %}
+                                    <button class="btn btn-outline-primary mx-1" id="participated-events" value="1">Eventos que participei</button>
+                                    <button class="btn btn-outline-primary mx-1" id="my-events" value="2">Meus Eventos</button>
+                                {% endif %}
+                            </div>
+                        {% if user.role.code != 'super-admin' %}
+                            <button class="btn btn-primary" id="add-event">+
+                                Adicionar evento
+                            </button>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between flex-wrap" id="event-data">
+{#                        <div class="text-center w-100"><img src="{% static 'images/loader.gif' %}" /></div>#}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    {#    Modal#}
+
+    <div class="modal fade" id="create-event-modal">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Evento</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="event-create">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                                <label>Nome</label>
+                                <input type="text" class="form-control" placeholder="Nome" id="name">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                                <label>Local</label>
+                                <input type="text" class="form-control" placeholder="Local" id="local">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                                <label>Tipo</label>
+                                <input type="text" class="form-control" placeholder="Tipo" id="type">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                                <label>Cidade</label>
+                                <input type="text" class="form-control" placeholder="Cidade" id="city">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                                <label>Preço</label>
+                                <input type="number" min="0" class="form-control" placeholder="Preço" id="price">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mb-3">
+                                <label>Data</label>
+                                <input type="datetime-local" class="form-control" placeholder="Data" id="date">
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label>Descrição</label>
+                                <textarea id="description" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submit">Submit</button>
+                    <button type="button" class="btn btn-primary d-none" id="edit">Update</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="share-event-modal">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Compartilhar evento</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="tagtext-type">
+                            <label>Email List <span style="font-size: 12px"><i>(Press space to add new email)</i></span></label>
+                            <div id="email-list"></div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="invite-submit">Submit</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script src='{% static "custom_js/event.js" %}'></script>
+    <script>
+        let data;
+        window.onload = function () {
+
+            data = {
+                "event_url": ' {% url "event" %}',
+                "user_id": {{ user.id }},
+                "event_delete_url": ' {% url "event_delete" %}',
+                "event_join_url": ' {% url "event_join" %}',
+                "loader": "{% static 'images/loader.gif' %}",
+                "user_role": "{{ user.role.code }}",
+                "event_invitation_url": "{% url 'event_invitation' %}"
+            };
+
+            new Events(data);
+        }
+    </script>
+{% endblock %}

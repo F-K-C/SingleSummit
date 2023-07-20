@@ -1,0 +1,157 @@
+.event{
+    width: 100%;
+    min-height: 250px;
+}
+
+.event h4{
+    max-height: 34px;
+    overflow: hidden;
+    word-wrap: break-word;
+    white-space: initial;
+}
+
+.event .small-alert{
+    margin: 0px;
+}
+
+.description {
+    max-height: 29px;
+    min-height: 29px;
+    overflow: hidden;
+}
+
+.event-date{
+    width: 30%;
+}
+.event-meta-data{
+    width: 60%;
+}
+
+.small-alert .type{
+    background: #ffc107;
+}
+
+.small-alert .type{
+    font-size: 14px;
+    color: white;
+    padding: 3px 5px;
+    border-radius: 0.4rem;
+
+}
+.date-time-design{
+    padding: 4rem;
+    border-right: 2px solid black;
+    display: table-cell;
+    position: relative;
+    border-right: 2px dashed #dadde6;
+    margin-right: 2.5rem;
+}
+
+.date-time-design::before,
+.date-time-design::after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-color: #DADDE6;
+    position: absolute;
+    top: -53px;
+    right: -26px;
+    z-index: 1;
+    border-radius: 50%
+}
+
+.date-time-design::after {
+    top: auto;
+    bottom: -53px
+}
+
+.date-time-design span{
+    font-size: 4rem;
+    text-align: center;
+    color: grey !important;
+}
+
+.date-time-design span:first-child {
+    color: #2b2b2b;
+    font-weight: 600;
+    line-height: 25px;
+}
+
+.date-time-design span:last-child {
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: -10px;
+}
+
+@media screen and (max-width: 900px) {
+    .card {
+        flex-direction: column !important;
+    }
+
+    .date-time-design{
+        width: 100%;
+    }
+
+    .event-meta-data{
+        width: 100%;
+    }
+
+
+    .date-time-design{
+        border-right: none;
+        margin-right: 0px;
+        border-bottom: 2px dashed #dadde6;
+        margin-bottom: 2.5rem !important;
+    }
+    .date-time-design::before,
+    .date-time-design::after {
+        left: auto;
+        width: 0px;
+        height: 0px;
+    }
+
+    .date-time-design::after {
+        top: auto;
+        bottom: 0px;
+
+    }
+}
+
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+/* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
